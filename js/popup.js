@@ -265,9 +265,9 @@ let showPePopup = (data) => {
         c.DiffTotal = (itemTotalPrice && c.Total) ? (itemTotalPrice - c.Total) * 100 / c.Total : null
         return c;
     })
-    document.querySelector('#itemName').textContent = data.Item_Name;
-    document.querySelector('#itemPrice').textContent = itemPrice ? parseFloat(itemPrice).toFixed(2) : ''
-    document.querySelector('#totalPrice').textContent = itemTotalPrice ? parseFloat(itemTotalPrice).toFixed(2) : '';
+    document.querySelector('#itemName').innerHtml = data.Item_Name;
+    document.querySelector('#itemPrice').innerHtml = itemPrice ? parseFloat(itemPrice).toFixed(2) : ''
+    document.querySelector('#totalPrice').innerHtml = itemTotalPrice ? parseFloat(itemTotalPrice).toFixed(2) : '';
     if (Slot1) {
         document.querySelector('#slot1box').classList.remove('hide');
         document.querySelector('#slot1boxTitle').textContent = data.Slot1_Label;
