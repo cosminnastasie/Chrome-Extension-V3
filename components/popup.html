@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/pe.css">
+    <script src="../ag-grid/ag-grid.js"></script>
+    <script src="../js/dompurify.js"></script>
+    <link rel="stylesheet" href="../ag-grid/ag-grid.css">
+    <title>Priceedge extension</title>
+</head>
+
+<body>
+    <div class="popup-wrapper" id="pePopupWraper" >
+        <div id="refreshExtensionSettings" title="Refresh settings">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 492.883 492.883" style="enable-background:new 0 0 492.883 492.883;" xml:space="preserve"><g><g><path d="M122.941,374.241c-20.1-18.1-34.6-39.8-44.1-63.1c-25.2-61.8-13.4-135.3,35.8-186l45.4,45.4c2.5,2.5,7,0.7,7.6-3    l24.8-162.3c0.4-2.7-1.9-5-4.6-4.6l-162.4,24.8c-3.7,0.6-5.5,5.1-3,7.6l45.5,45.5c-75.1,76.8-87.9,192-38.6,282    c14.8,27.1,35.3,51.9,61.4,72.7c44.4,35.3,99,52.2,153.2,51.1l10.2-66.7C207.441,421.641,159.441,407.241,122.941,374.241z"/><path d="M424.941,414.341c75.1-76.8,87.9-192,38.6-282c-14.8-27.1-35.3-51.9-61.4-72.7c-44.4-35.3-99-52.2-153.2-51.1l-10.2,66.7    c46.6-4,94.7,10.4,131.2,43.4c20.1,18.1,34.6,39.8,44.1,63.1c25.2,61.8,13.4,135.3-35.8,186l-45.4-45.4c-2.5-2.5-7-0.7-7.6,3    l-24.8,162.3c-0.4,2.7,1.9,5,4.6,4.6l162.4-24.8c3.7-0.6,5.4-5.1,3-7.6L424.941,414.341z"/></g></g><g> </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+        </div>
+        <div id="logOut" title="Log out"><svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
+                <path
+                    d="M 11 3 C 6.038 3 2 7.038 2 12 C 2 16.962 6.038 21 11 21 C 14.111 21 16.85375 19.407 18.46875 17 L 15.875 17 C 14.614 18.231 12.897 19 11 19 C 7.14 19 4 15.86 4 12 C 4 8.14 7.14 5 11 5 C 12.897 5 14.614 5.769 15.875 7 L 18.46875 7 C 16.85375 4.593 14.111 3 11 3 z M 17 8 L 17 11 L 9 11 L 9 13 L 17 13 L 17 16 L 22 12 L 17 8 z">
+                </path>
+            </svg>
+        </div>
+        
+        <div id="loginForm" class="login-form hide popup-element">
+            <div class="login-form-content">
+                <div id="loginForm" class="popup-center-message vertical-content">
+                    <div class="login-rowm-bottom-4"><img src="http://priceedge.eu/static/img/logo-priceedge.png" class="mb-3" alt="PriceEdgelogo" /></div>
+                    <div class="login-row m-bottom-4" style="align-items: center">Login to your <span class="bold-text m-x-1">PriceEdge™</span> ChromeExtension <span class="info-icon-box"><span class="info-icon">i</span><span class="pe-tootltip">Priceedge Chrome Extension has its own login. You can use your priceedge credentials to login!</span></span></div>
+                    <div class="login-row flex-column">
+                        <div class="input-label">Username</div><input name="user_name" id="user_name" type="text" />
+                    </div>
+                    <div class="login-row flex-column">
+                        <div class="input-label flex-space-between"><span>Password</span><span id="showPassword" class="blueish-link bold-500">Show Password</span></div><input autocomplete="new-password" name="user_password" id="user_password" type="password" />
+                    </div>
+                    <div  id="loginBtnRow" class="login-row flex-column" style="min-height: 80px">
+                        <div id="errorLabel" class="erorr-label hide"></div>
+                        <button id="loginBtn" class="private-red-button full-width-button  disabled" data-action-source="popup">LOGIN <span></span></button>
+                    </div>
+                    <div id="waitImageLogin" class="hide" style="height: 80px">
+                        <div class="uiLoading uiLoading-grow" title="Loading…">
+                            <div class="uiLoadingDot dot-1 loading-blue"></div>
+                            <div class="uiLoadingDot dot-2 loading-blue"></div>
+                            <div class="uiLoadingDot dot-3 loading-blue"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="waitImage" class="popup-element">
+            <div class="uiLoading uiLoading-grow" title="Loading…">
+                <div class="uiLoadingDot dot-1 loading-blue"></div>
+                <div class="uiLoadingDot dot-2 loading-blue"></div>
+                <div class="uiLoadingDot dot-3 loading-blue"></div>
+            </div>
+        </div>
+        
+        <div id="extensionReadyBox" class="hide popup-element">
+            <img src="https://cdn.priceedge.eu/price/images/new/pe-img_report_1_xs.png" alt="">
+            <div>Your extension is ready to use</div>
+        </div>
+
+        <div id="pePopup" class="hide popup-element">
+            <div class="header-action">
+                <div id="plDropdown" class="width-quarter"></div>
+                <div id="itemName" class="h-4"></div>
+                <div class="width-quarter"></div>
+            </div>
+            <div class="pe-header cols-row-3">
+                <div class="" id="priceBox">
+                    <div class="h-1">Price</div>
+                    <div id="itemPrice" class="d-1"></div>
+                </div>
+                <div class="hide" id="slot1box">
+                    <div class="h-1" id="slot1boxTitle"></div>
+                    <div id="slot1boxValue" class="d-1"></div>
+                </div>
+                <div class="" id="totalPriceBox">
+                    <div class="h-1">Total Price</div>
+                    <div id="totalPrice" class="d-1"></div>
+                </div>
+            </div>
+            <div id="popupContent" class="popup-content">
+                <div id="popupGrid" class=""></div>
+                <div id="noMatchBox" class="centered-block hide border-top-bottom">There are no matches for this item!</div>
+            </div>
+            <div class="cols-row-2 border-b">
+                <div class="" id="slot2box">
+                    <div class="h-1" id="slot2boxTitle"></div>
+                    <div class="d-1" id="slot2boxValue"></div>
+                </div>
+                <div class="" id="slot3box">
+                    <div class="h-1" id="slot3boxTitle"></div>
+                    <div class="d-1" id="slot3boxValue"></div>
+                </div>
+
+            </div>
+            <div class="popup-footer">
+                <img src="../images/logo-priceedge.png" alt="Priceedge">
+                <div class="footer-but-row">
+                    <a href="" class="private-red-button" id="showGraph" target="_blank">SHOW GRAPH</a>
+                    <div class="private-red-bordered-button m-left-2 hide" id="showPriceBuildup">PRICE BUILDUP</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="popupError" class="centered-block hide p-10 popup-element">There was an error on getting data. Please reopen the popup! If the error persist, contact support!</div>
+        
+        <div id="noSettingsError" class="hide alert-row alert-box popup-element">
+            <div> There is no Price or Total Price for this product! You can  set the columns for these <a href="#" target="_blank"> here </a>. </a></div>
+            <span class="cross-icon close-icon"></span>
+        </div>
+
+        <div id="UIErrors" class="alert-box hide popup-element">
+            <div>
+                <div id="UIErrorContent"></div>
+                <!-- <span class="cross-icon close-icon"></span> -->
+            </div>
+        </div>
+        
+        <div id="buildupTableBox" class="hide popup-element">
+            <div class="flex-row flex-space-between header-box"></div>
+            <!-- <div class="h-3">Price buildup</div> -->
+            <div id="buildupTable"></div>
+        </div>
+
+        <div id='matchPopup' class="hide popup-element">
+            <div class="pe-popup-header">Add manual match</div>
+            <div class="pe-popup-body">
+                <div  class="input-group">
+                    <div class="label">Search item</div>
+                    <div style="position: relative" >
+                        <div id="itemNumberBox" contenteditable="true" data-itemNumber></div>
+                        <div class="pencil-icon" id="editItemNumber">
+                            <svg data-icon="pencil" width="20" height="18" viewBox="0 0 18 18" role="img"><g id="edit_2_"><g><path fill-rule="evenodd" clip-rule="evenodd" d="M4.59,12.59l2.83,2.83l7.65-7.65l-2.83-2.83L4.59,12.59z M2,18l4.41-1.59    l-2.81-2.79L2,18z M16,2c-0.55,0-1.05,0.22-1.41,0.59l-1.65,1.65l2.83,2.83l1.65-1.65C17.78,5.05,18,4.55,18,4C18,2.9,17.1,2,16,2    z"></path></g></g></svg>
+                        </div>
+                    </div>
+                    <div style="position: relative">
+                        <div class="pe-dropdown hide" id="searchDropdown">
+                            <div class="pe-dropdown-header " id="peDropdownHeader">
+                                <div style="position: relative">
+                                    <input type="text" id="searchItem"  placeholder="Search item"  />
+                                    <span id="searchIcon" class="search-icon"><svg data-icon="search" width="18" height="18" viewBox="0 0 16 16" role="img"><path d="M15.55 13.43l-2.67-2.68a6.94 6.94 0 001.11-3.76c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.39 0 2.68-.42 3.76-1.11l2.68 2.67a1.498 1.498 0 102.12-2.12zm-8.56-1.44c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill-rule="evenodd"></path></svg></span>
+                                    <div id="waitImageSearch" class="hide wait-image-s"><div class="uiLoading uiLoading-grow" title="Loading…"><div class="uiLoadingDot dot-1 loading-blue"></div><div class="uiLoadingDot dot-2 loading-blue"></div><div class="uiLoadingDot dot-3 loading-blue"></div> </div>
+                                    </div>
+                                </div> 
+                                <div class="pe-dropdown-item" id="peNoResultsLi">No results</div>
+                            </div>
+                            <div class="pe-dropdown-content" id="searchDropdownContent"></div>
+                        </div>
+                    </div>
+                </div>
+                <div  class="input-group">
+                    <div class="label">Match url</div>
+                    <div id="matchUrl" contenteditable="true"></div>
+                </div>
+            </div>
+            <div class="pe-popup-footer">
+                <div class="private-red-bordered-button" id="saveMatch">Save match</div>
+            </div>
+        </div>
+
+        <div id="infoBox" class="hide"></div>
+    </div>
+    <script src="../js/login.js"></script>
+    <script src="../js/popup.js"></script>
+</body>
+
+</html>

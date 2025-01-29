@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priceedge extension options</title>
+    <script src="../js/dompurify.js"></script>
+    <link rel="stylesheet" href="/css/options.css">
+    <link rel="stylesheet" href="/css/pe.css">
+</head>
+<body>
+    <div class="strech-100">
+        <div class="container">
+            <div class="justify-content-center">
+                <div id="progressSlider" class="pe-slider-box">
+                    <div >
+                        <div class="slider-item">
+                            <span class="slider-dot" data-step="0"></span>
+                            <span class="slider-line"></span>
+                            <span class="slider-text" >Set priceedge domain</span>
+                        </div>
+                        <div class="slider-item">
+                            <span class="slider-dot" data-step="1"></span>
+                            <span class="slider-line"></span>
+                            <span class="slider-text" >Login</span>
+                        </div>
+                        <a href="" class="slider-item" id="setColumnsLink">
+                            <span class="slider-dot"></span>
+                            <span class="slider-text" >Set columns to show</span>
+                        </a>
+                    </div>
+                    <div></div>
+                </div>
+                <span id="popupContent">
+
+                    <div class="m-auto col-lg-5 popup-item" id="setDomainBox">
+                        <div class="center-box login-box" >
+                            <img src="../images/logo-priceedge.png" alt="Priceedge"  class="logo-img m-auto"/>
+                            <p class="tagline m-auto">
+                                Link to your <strong>PriceEdge™</strong> account domain
+                            </p>
+                            <div id='successText' class="success-text hide m-bottom-4"></div>
+                            <div id="setupStatus"></div>
+                            <div id="domainStatusBox"></div>
+                            <div id="addPriceedgeDomain">
+                                <!-- <div class="input-label">Set your priceedge domain</div> -->
+                                <div class="input-group">
+                                    <input type="text" name="priceedgeDomain" id="priceedgeDomain" value="" class="form-control" placeholder="domain" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                                    <span class="domain">.priceedge.eu</span>
+                                </div>
+                            </div>
+                            <button id="setPEDomain" type="button" class="btn btn-block btn-primary">CONTINUE</button>
+                        </div>
+                    </div>
+
+                    <div class="m-auto col-lg-5 hide popup-item" id="loginBox">
+                        <div id="loginForm" class="login-form " >
+                            <div class="login-form-content center-box login-box">
+                                <div id="loginForm" class="popup-center-message vertical-content">
+                                    <div class="login-row m-bottom-4"><img src="http://priceedge.eu/static/img/logo-priceedge.png" class="mb-3" alt="PriceEdgelogo" /></div>
+                                    <div class="login-row m-bottom-4" style="align-items: center; flex-wrap: wrap">Login to your <span class="bold-text m-x-1">PriceEdge™</span> ChromeExtension <span class="info-icon-box"><span class="info-icon">i</span><span class="pe-tootltip">Priceedge Chrome Extension has its own login. You can use your priceedge credentials to login!</span></span></div>
+                                    <div class="login-row flex-column">
+                                        <div class="input-label">Username</div><input name="user_name" id="user_name" type="text" />
+                                    </div>
+                                    <div class="login-row flex-column m-bottom-3" style="margin-bottom: 0">
+                                        <div class="input-label flex-space-between"><span>Password</span><span id="showPassword" class="blueish-link bold-500">Show Password</span></div><input autocomplete="new-password" name="user_password" id="user_password" type="password" />
+                                    </div>
+                                    <div  id="loginBtnRow" class="login-row flex-column" style="min-height: 80px">
+                                        <div id="errorLabel" class="erorr-label hide"></div>
+                                        <button id="loginBtn" class="private-red-button full-width-button  disabled"  data-action-source="options">LOGIN</button>
+                                    </div>
+                                    <div id="waitImageLogin" class="hide" style="height: 80px">
+                                        <div class="uiLoading uiLoading-grow" title="Loading…">
+                                            <div class="uiLoadingDot dot-1 loading-blue"></div>
+                                            <div class="uiLoadingDot dot-2 loading-blue"></div>
+                                            <div class="uiLoadingDot dot-3 loading-blue"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hide popup-item" id="extensionReadyBox" >
+                        <div class="pe-card">
+                            <img src="https://cdn.priceedge.eu/price/images/new/554_PE_new-icons_v3_09.png" alt="">
+                            <div class="input-label h-3">The extension links were saved! </div>
+                            <div id="successMessage" class="m-top-6">You are currently tracking:</div>
+                            <div class="">You can now select the prices columns used by the extension</div>
+                            <div class="m-top-8">
+                                <a class="private-red-button" id="settingsURL">OPEN SETTINGS</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hide popup-item" id="noDomainsError" >
+                        <div class="pe-card">
+                            <img src="https://cdn.priceedge.eu/price/images/new/554_PE_new-icons_v3_14b.png" style="max-width: 200px;" />
+                            <div id="noDomainsMessage" class="m-top-6 h-3">There are no domains set on your backend</div>
+                            <div class="">You must set the tracked domains, then refresh the extension.</div>
+                            <div class="m-top-8">
+                                <a class="private-red-button" id="settingsDomainsURL">Open priceedge domains setup page</a>
+                            </div>
+                        </div>
+                    </div>  
+                </span>
+         
+            </div>
+        </div>
+
+    </div>
+    <script src="../js/login.js"></script>
+    <script src="../js/options.js"></script>
+</body>
+</html>
