@@ -1,5 +1,5 @@
 const client_id = 'chromeplugin';
-const client_secret = 'raspberry';
+const client_s = 'raspberry';
 const refreshTokenDelta = 60 * 60 * 1000
 const plPayload = {
     bypassTotalCount: true,
@@ -192,7 +192,7 @@ refreshToken = (callback) => {
         var formdata = new FormData();
         formdata.append("grant_type", "refresh_token");
         formdata.append("client_id", client_id);
-        formdata.append("client_secret", client_secret);
+        formdata.append("client_secret", client_s);
         formdata.append("refresh_token", refresh_token);
         
         var requestOptions = {
@@ -247,7 +247,7 @@ getToken = (userName, password, getTokenCallback) => {
         var formdata = new FormData();
         formdata.append("grant_type", "password");
         formdata.append("client_id", client_id);
-        formdata.append("client_secret", client_secret);
+        formdata.append("client_secret", client_s);
         formdata.append("username", userName);
         formdata.append("password", password);
         var requestOptions = {
