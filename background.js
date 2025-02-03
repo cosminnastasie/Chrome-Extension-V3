@@ -16,11 +16,7 @@ const plOptions = {
     'contentType': 'application/json',
     "body": JSON.stringify(plPayload)
 }
-
 const PAPIURL = ''
-
-
-
 
 
 // On installed 
@@ -31,11 +27,11 @@ let defaultConditions = [
     new chrome.declarativeContent.PageStateMatcher({
         pageUrl: { hostSuffix: '.priceedge.eu' },
     })
-]
-
+]    
+   
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-        chrome.storage.local.remove(["access_token", "tokenExpiration", 'domain', 'trackedDomains', 'areColumnSettingsSet', 'infoExpirationTime', 'refresh_token', 'isLogin', 'siteSelectors', 'deviationSettings']);
+        chrome.storage.local.remove(["access_token", "tokenExpiration", 'domain', 'trackedDomains', 'areColumnSettingsSet', 'infoExpirationTime', 'refresh_token', 'isLogin', 'siteSelectors', 'deviationSettings', 'dataPricelist']);
         updateRules(() => {
             chrome.runtime.openOptionsPage();
         });
@@ -45,7 +41,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 chrome.runtime.onUpdateAvailable.addListener(()=>{
     chrome.runtime.reload();
 })
-
 
 updateRules = (callback) => {
     // Set default conditions where popup action is enabled
@@ -124,9 +119,7 @@ chrome.runtime.onMessage.addListener(
         
         if(request.action === 'getPricelists'){
             getPricelists();
-        }
-
-        
+        }   
 
         if(request.action === 'saveMatch'){
             let params = {code: request.params.cd_DataSource, itemNumber: request.params.itemNumber, comp_url: request.params.url}
@@ -175,10 +168,7 @@ getProductData = (request) => {
 }
 
 getDeviationData = (request) => {
-    let productIdsList = request.payloads.productsIdsList;
-    let selectorId = request.payloads.selectorId;          
-
-    postRequest('/api/plugin/products-deviation-data', { selectorId, productIdsList }, (data) => {
+    postRequest('/api/plugin/products-deviation-data', request.payloads, (data) => {
         if (data.message && data.message.includes('Authorization has been denied')) {
             refreshToken((data)=>{
                 getDeviationData(request)
@@ -201,7 +191,7 @@ refreshToken = (callback) => {
 
         var formdata = new FormData();
         formdata.append("grant_type", "refresh_token");
-        formdata.append("client_id", "chromeplugin");
+        formdata.append("client_id", client_id);
         formdata.append("client_secret", client_s);
         formdata.append("refresh_token", refresh_token);
         
@@ -256,7 +246,7 @@ getToken = (userName, password, getTokenCallback) => {
         
         var formdata = new FormData();
         formdata.append("grant_type", "password");
-        formdata.append("client_id", "chromeplugin");
+        formdata.append("client_id", client_id);
         formdata.append("client_secret", client_s);
         formdata.append("username", userName);
         formdata.append("password", password);
@@ -315,18 +305,15 @@ getBrowserExtensionInfo = () => {
     });
 
     
-    // getPricelists();
+    getPricelists();
 }
 
 getPricelists = () => {
     // Get pticelist list
-    console.log('Get pticelist list..............')
     postRequest(plEndpoint, null, (data)=>{
         let pricelists = data?.Data?.data;
         if(pricelists){
-            chrome.storage.local.set({ pricelists: pricelists }, () => {
-                console.log('Pricelists saved to local storage.');
-            });
+            chrome.storage.local.set({ pricelists: pricelists }, () => {});
         }
     }, null, plOptions)
 }
@@ -421,7 +408,7 @@ function postRequest(endpoint, parameters, callback, errorBack, rOptions) {
                 })
             }
         }
-
+       
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -477,10 +464,5 @@ function getRequest(endpoint, callback) {
             .catch(error => console.log('error', error));
     })
 }
-
-
-    
-
-
 
 

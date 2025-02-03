@@ -59,9 +59,13 @@ try{
                         if(triggerGetData){
                             let newIdsListArr = Array.from(newIdsList);
                             newIdsListArr = newIdsListArr.filter(i=>!(consumedIds.has(i)));
-                            let productsIdsList = (newIdsListArr).join(',') + ',';
-                            let payloads = {selectorId: Id, productsIdsList };
-                            chrome.runtime.sendMessage({action: "getProductListPageData", payloads, });
+                            let productIdsList = (newIdsListArr).join(',') + ',';
+                            let payloads = {selectorId: Id, productIdsList };
+                            chrome.storage.local.get(["dataPricelist"], function (result) {
+                                payloads['pricelist'] = result?.dataPricelist
+                                chrome.runtime.sendMessage({action: "getProductListPageData", payloads });
+                            })
+
                             triggerGetData = false;
                             newIdsListArr.forEach(u=>consumedIds.add(u));
                         }  
@@ -120,15 +124,22 @@ try{
                                 }
                             }
                             if(productId !== ''){
-                                console.log('Selector...: ', s);
                                 console.log('ProductId: ', productId);
-                                let payloads = {
-                                    productId: productId.toString().trim(),
-                                    type: selectorType.toString(),
-                                    domain: s.Domain.toString()
-                                }
-    
-                                chrome.runtime.sendMessage({action: "getPopupData", payloads});
+                                // Set default  pricelist
+                                chrome.storage.local.get(["dataPricelist"], function (result) {
+                                    let dataPricelist = result?.dataPricelist
+                                    if(! dataPricelist){
+                                        chrome.storage.local.set({ dataPricelist: s.cd_Pricelist }, () => {});
+                                    }
+                                    // Get data
+                                    let payloads = {
+                                        productId: productId.toString().trim(),
+                                        type: selectorType.toString(),
+                                        domain: s.Domain.toString(),
+                                        pricelist: dataPricelist
+                                    }
+                                    chrome.runtime.sendMessage({action: "getPopupData", payloads});
+                                })
                             }else{
                                 chrome.runtime.sendMessage({action: "noIdFound"});
                             }

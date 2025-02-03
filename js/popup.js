@@ -231,16 +231,12 @@ let processSlotValue = (value) => {
   }
 
 let showPePopup = (data) => {
-    console.log('Show popup..... data', data);
-
+    console.log('Data', data);
     // Retrieve data from local storage
-
     chrome.storage.local.get(['pricelists'], (result) => {
         if (result.pricelists) {
-            console.log('Pricelists retrieved.......:', result.pricelists);
             createDropdown(result.pricelists)
         } else {
-            console.log('No pricelists found......');
             chrome.runtime.sendMessage({ action: "getPricelists" });
         }
     });
@@ -265,9 +261,9 @@ let showPePopup = (data) => {
         c.DiffTotal = (itemTotalPrice && c.Total) ? (itemTotalPrice - c.Total) * 100 / c.Total : null
         return c;
     })
-    document.querySelector('#itemName').innerHtml = data.Item_Name;
-    document.querySelector('#itemPrice').innerHtml = itemPrice ? parseFloat(itemPrice).toFixed(2) : ''
-    document.querySelector('#totalPrice').innerHtml = itemTotalPrice ? parseFloat(itemTotalPrice).toFixed(2) : '';
+    document.querySelector('#itemName').textContent = data.Item_Name;
+    document.querySelector('#itemPrice').textContent = itemPrice ? parseFloat(itemPrice).toFixed(2) : ''
+    document.querySelector('#totalPrice').textContent = itemTotalPrice ? parseFloat(itemTotalPrice).toFixed(2) : '';
     if (Slot1) {
         document.querySelector('#slot1box').classList.remove('hide');
         document.querySelector('#slot1boxTitle').textContent = data.Slot1_Label;
@@ -851,6 +847,11 @@ function createDropdown(items) {
     dropdownButton.textContent = 'Select a pricelist';
 
     dropdown.appendChild(dropdownButton);
+    chrome.storage.local.get(["dataPricelist"], function (result) {
+        if(result?.dataPricelist){
+            dropdownButton.textContent = 'PL: ' + items.filter(pl=>pl.Code===result?.dataPricelist )[0].Name;
+        }
+    })
 
     // Create dropdown menu
     const dropdownMenu = document.createElement('ul');
@@ -868,7 +869,13 @@ function createDropdown(items) {
             dropdownButton.setAttribute('data-pl-code', item['Code']); // Adding an attribute
             dropdownMenu.classList.remove('show'); // Close dropdown
             chrome.storage.local.set({ dataPricelist: item['Code'] }, () => {
-                console.log('Pricelists saved to local storage. Refresh the data using pricelist selected.......');
+                chrome.storage.local.get(["dataPricelist", "dataPayloads"], function (result) {
+                    let dataPayloads = result?.dataPayloads
+                    if(dataPayloads){
+                        dataPayloads['pricelist'] = result?.dataPricelist
+                        chrome.runtime.sendMessage({action: "getPopupData", payloads: dataPayloads})
+                    }
+                })
             });
         });
 
@@ -890,6 +897,7 @@ function createDropdown(items) {
     });
 
     // Append dropdown to body
+    document.querySelector('#plDropdown').innerHTML = '';
     document.querySelector('#plDropdown').appendChild(dropdown);
 }
 
