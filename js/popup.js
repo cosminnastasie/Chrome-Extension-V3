@@ -266,8 +266,8 @@ let showPePopup = (data) => {
     document.querySelector('#totalPrice').textContent = itemTotalPrice ? parseFloat(itemTotalPrice).toFixed(2) : '';
     if (Slot1) {
         document.querySelector('#slot1box').classList.remove('hide');
-        document.querySelector('#slot1boxTitle').textContent = data.Slot1_Label;
-        document.querySelector('#slot1boxValue').textContent = Slot1;
+        document.querySelector('#slot1boxTitle').innerHTML = data.Slot1_Label;
+        document.querySelector('#slot1boxValue').innerHTML = Slot1;
     }
     if (Slot2) {
         // document.querySelector('#slot2box').classList.remove('hide');
